@@ -8,7 +8,7 @@ class Node:  # Node = Location = Point
         self.id = int(id)
 
 # получаем набор данных для TSP
-file_name = "training_dataset"  
+file_name = "training_dataset.txt"  
 dataset = []
 
 with open(file_name, "r") as f:
