@@ -22,7 +22,7 @@ N = 20 # количество точек (городов)
 
 # в самом начале создаём матрицу расстояний между точками (городами)
 def create_distance_matrix(node_list):
-    matrix = [[0 for _ in range(N)] for _ in range(N)]
+    matrix = [[0 for _ in range(N)] for _ in range(N)] # NxN matrix
 
     # classical matrix creation with two for loops
     for i in range(0, len(matrix)-1):
@@ -33,4 +33,26 @@ def create_distance_matrix(node_list):
                 pow((node_list[i].x - node_list[j].x), 2) + pow((node_list[i].y - node_list[j].y), 2)
             )
     return matrix
+
+matrix = create_distance_matrix(dataset) #Создаём матрицу. Вычисляем расстояние между всеми точками датасета 
+
+# Chromosome = Solution = Path
+# Хромосомы будут состоять из Node объектов. Используется во всех стадиях алгоритма.
+# Chromosome cost will be used to compare the chromosomes
+# We want to minimize the cost. So, lower cost is better!
+class Chromosome:
+    def __init__(self, node_list):
+        self.chromosome = node_list # хромосома = нод_лист
+
+        chr_representation = []
+        for i in range(0, len(node_list)):
+            chr_representation.append(self.chromosome[i].id)
+        self.chr_representation = chr_representation
+
+        distance = 0
+        for j in range(1, len(self.chr_representation) - 1):  # get distances from the matrix
+            distance += matrix[self.chr_representation[j]-1][self.chr_representation[j + 1]-1]
+        self.cost = distance # расстояние в каждой хромосоме = цена рассматриваемой хромосомы
+
+        self.fitness_value = 1 / self.cost
 
